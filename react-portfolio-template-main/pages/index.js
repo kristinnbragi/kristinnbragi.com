@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import Header from "../components/Header";
 import ServiceCard from "../components/ServiceCard";
 import Socials from "../components/Socials";
@@ -9,10 +9,73 @@ import Footer from "../components/Footer";
 import Head from "next/head";
 import Button from "../components/Button";
 import Link from "next/link";
-// import Cursor from "../components/Cursor";
+import Modal from 'react-modal';
+
+Modal.setAppElement('#__next');
 
 // Local Data
 import data from "../data/portfolio.json";
+
+const closeButtonStyle = {
+  position: 'absolute',
+  color: 'white',
+  top: '20px',
+  right: '20px',
+  background: 'none',
+  border: 'none',
+  fontSize: '3rem',
+  cursor: 'pointer',
+};
+
+function WorkCardWithModal({ project }) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  return (
+    <div key={project.id}>
+      <WorkCard
+        img={project.imageSrc}
+        name={project.title}
+        description={project.description}
+        onClick={() => setModalIsOpen(true)}
+      />
+
+      <Modal 
+        isOpen={modalIsOpen} 
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel="Project Details"
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+          },
+          content: {
+            color: 'white',  // this changes the text color inside the modal to black
+            background: 'black',  // changes the background color of the content
+            // maxWidth: '500px',  // sets a maximum width
+            margin: 'auto',  // centers the modal on the page
+            padding: '20px',  // adds some padding
+            borderRadius: '4px',  // gives the modal rounded corners
+          },
+        }}
+      >
+        <h2>{project.title}</h2>
+        <p>{project.description}</p>
+        <button onClick={() => setModalIsOpen(false)} style={closeButtonStyle}>×</button>
+      </Modal>
+
+
+
+      {/* <Modal 
+        isOpen={modalIsOpen} 
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel="Project Details"
+      >
+        <h2>{project.title}</h2>
+        <p>{project.description}</p>
+        <button onClick={() => setModalIsOpen(false)}>Close</button>
+      </Modal> */}
+    </div>
+  );
+}
 
 export default function Home() {
   // Ref
@@ -98,13 +161,7 @@ export default function Home() {
 
           <div className="mt-5 laptop:mt-10 grid grid-cols-1 tablet:grid-cols-2 gap-4">
             {data.projects.map((project) => (
-              <WorkCard
-                key={project.id}
-                img={project.imageSrc}
-                name={project.title}
-                description={project.description}
-                onClick={() => window.open(project.url)}
-              />
+              <WorkCardWithModal key={project.id} project={project} />
             ))}
           </div>
         </div>
