@@ -80,10 +80,90 @@ export const Industria = ({ project }) => {
     );
 }
 
+export const EEG = ({ project }) => {
+    return (
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#282c34',
+            color: 'white',
+            padding: '20px',
+            textAlign: 'center'
+        }}>
+            <h1 style={{ marginBottom: '20px' }}>{project.title}</h1>
+            <p style={{ marginBottom: '20px' }}>{project.description}</p>
+            <p>This is some custom content for Project Two.</p>
+        </div>
+    );
+}
+
+export const Shapefall = ({ project }) => {
+    return (
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#282c34',
+            color: 'white',
+            padding: '20px',
+            textAlign: 'center'
+        }}>
+            <h1 style={{ marginBottom: '20px' }}>{project.title}</h1>
+            <p style={{ marginBottom: '20px' }}>{project.description}</p>
+            <p>This is some custom content for Project Two.</p>
+        </div>
+    );
+}
+
+export const WebOfLies = ({ project }) => {
+    return (
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#282c34',
+            color: 'white',
+            padding: '20px',
+            textAlign: 'center'
+        }}>
+            <h1 style={{ marginBottom: '20px' }}>{project.title}</h1>
+            <p style={{ marginBottom: '20px' }}>{project.description}</p>
+            <p>This is some custom content for Project Two.</p>
+        </div>
+    );
+}
+
+export const CatARoomba = ({ project }) => {
+    return (
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#282c34',
+            color: 'white',
+            padding: '20px',
+            textAlign: 'center'
+        }}>
+            <h1 style={{ marginBottom: '20px' }}>{project.title}</h1>
+            <p style={{ marginBottom: '20px' }}>{project.description}</p>
+            <p>This is some custom content for Project Two.</p>
+        </div>
+    );
+}
+
 const projects = {
     TempleOfStarlight,
     WalnutFalls,
     Industria,
+    EEG,
+    Shapefall,
+    WebOfLies,
+    CatARoomba,
     // other projects...
 };
 
