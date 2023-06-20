@@ -11,6 +11,8 @@ import Button from "../components/Button";
 import Link from "next/link";
 import Modal from 'react-modal';
 
+import projectComponents from './Projects';
+
 Modal.setAppElement('#__next');
 
 // Local Data
@@ -29,6 +31,7 @@ const closeButtonStyle = {
 
 function WorkCardWithModal({ project }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const ProjectComponent = projectComponents[project.url];
 
   return (
     <div key={project.id}>
@@ -60,6 +63,9 @@ function WorkCardWithModal({ project }) {
         <h2>{project.title}</h2>
         <p>{project.description}</p>
         <button onClick={() => setModalIsOpen(false)} style={closeButtonStyle}>×</button>
+
+        <ProjectComponent project={project} />
+
       </Modal>
 
 
