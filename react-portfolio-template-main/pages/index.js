@@ -10,8 +10,10 @@ import Head from "next/head";
 import Button from "../components/Button";
 import Link from "next/link";
 import Modal from 'react-modal';
-
+import { useEffect } from 'react';
 import projectComponents from './Projects';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 Modal.setAppElement('#__next');
 
@@ -29,9 +31,14 @@ const closeButtonStyle = {
   cursor: 'pointer',
 };
 
-function WorkCardWithModal({ project }) {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+function WorkCardWithModal({ project, current, onShowNext, onShowPrev, setCurrentProjectIndex, index }) {
+  const [modalIsOpen, setModalIsOpen] = useState(current);
   const ProjectComponent = projectComponents[project.url];
+
+  // Open the modal when the project becomes the current project
+  useEffect(() => {
+    setModalIsOpen(current);
+  }, [current]);
 
   return (
     <div key={project.id}>
@@ -39,7 +46,10 @@ function WorkCardWithModal({ project }) {
         img={project.imageSrc}
         name={project.title}
         description={project.description}
-        onClick={() => setModalIsOpen(true)}
+        onClick={() => {
+          setModalIsOpen(true);
+          setCurrentProjectIndex(index);
+        }}
       />
 
       <Modal 
@@ -54,18 +64,40 @@ function WorkCardWithModal({ project }) {
             color: 'white',  // this changes the text color inside the modal to black
             background: 'black',  // changes the background color of the content
             // maxWidth: '500px',  // sets a maximum width
-            margin: 'auto',  // centers the modal on the page
-            padding: '20px',  // adds some padding
+            margin: '36px',  // centers the modal on the page
+            padding: '36px',  // adds some padding
             borderRadius: '4px',  // gives the modal rounded corners
           },
         }}
       >
         <h2>{project.title}</h2>
         <p>{project.description}</p>
-        <button onClick={() => setModalIsOpen(false)} style={closeButtonStyle}>×</button>
+        <button onClick={() => setModalIsOpen(false)} style={closeButtonStyle}>
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
 
         <ProjectComponent project={project} />
 
+        <button className="prevButton" onClick={onShowPrev}>
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </button>
+        <button className="nextButton" onClick={onShowNext}>
+          <FontAwesomeIcon icon={faChevronRight} />
+        </button>
+        <style jsx>{`
+          .prevButton, .nextButton {
+            position: fixed;
+            top: 50%;  // Center vertically
+            transform: translateY(-50%);  // Ensure the center of the button is the point that gets centered
+            font-size: 3rem;
+          }
+          .prevButton {
+            left: 20px;
+          }
+          .nextButton {
+            right: 20px;
+          }
+        `}</style>
       </Modal>
 
 
@@ -166,6 +198,16 @@ export default function Home() {
     );
   }, []);
 
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(null);
+
+  const showNextProject = () => {
+    setCurrentProjectIndex((currentProjectIndex + 1) % data.projects.length);
+  };
+  
+  const showPrevProject = () => {
+    setCurrentProjectIndex((currentProjectIndex - 1 + data.projects.length) % data.projects.length);
+  };
+  
   return (
     <div>
       {data.showCursor}
@@ -218,8 +260,16 @@ export default function Home() {
           <h1 className="text-2xl text-bold">Work.</h1>
 
           <div className="mt-5 laptop:mt-10 grid grid-cols-1 tablet:grid-cols-2 gap-4">
-            {data.projects.map((project) => (
-              <WorkCardWithModal key={project.id} project={project} />
+            {data.projects.map((project, index) => (
+              <WorkCardWithModal
+                key={project.id}
+                project={project}
+                current={currentProjectIndex === index}
+                onShowNext={showNextProject}
+                onShowPrev={showPrevProject}
+                setCurrentProjectIndex={setCurrentProjectIndex}
+                index={index}
+              />
             ))}
           </div>
         </div>
