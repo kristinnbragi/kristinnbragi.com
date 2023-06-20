@@ -59,6 +59,7 @@ export const Industria = ({ project }) => {
 
 const projects = {
     TempleOfStarlight,
+    WalnutFalls,
     Industria,
     // other projects...
 };

@@ -83,6 +83,55 @@ function WorkCardWithModal({ project }) {
   );
 }
 
+function VideoSection() {
+  return (
+    <div className="videoSection">
+      <div className="videoWrapper">
+        <iframe 
+          width="100%" 
+          height="315"
+          src="https://www.youtube.com/embed/1mjEmOuLd-A" 
+          frameBorder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowFullScreen
+          title="YouTube video 1"
+        ></iframe>
+      </div>
+      <div className="videoWrapper">
+        <iframe 
+          width="100%" 
+          height="315" 
+          src="https://www.youtube.com/embed/IspOxcpNzNs" 
+          frameBorder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowFullScreen
+          title="YouTube video 2"
+        ></iframe>
+      </div>
+      <style jsx>{`
+        .videoSection {
+          display: flex; 
+          flexDirection: row; 
+          alignItems: center;
+          justify-content: center;  // Add this line
+          gap: 20px;
+        }
+        .videoWrapper {
+          width: 45%;
+        }
+        @media (max-width: 768px) {
+          .videoSection {
+            flex-direction: column;
+          }
+          .videoWrapper {
+            width: 100%;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 export default function Home() {
   // Ref
   const workRef = useRef();
@@ -162,6 +211,9 @@ export default function Home() {
 
           <Socials className="mt-2 laptop:mt-5" />
         </div>
+
+        <VideoSection />
+
         <div className="mt-10 laptop:mt-30 p-2 laptop:p-0" ref={workRef}>
           <h1 className="text-2xl text-bold">Work.</h1>
 
