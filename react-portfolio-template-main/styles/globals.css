@@ -12,6 +12,27 @@ body {
   @apply dark:bg-black dark:text-white;
 }
 
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  height: 80vh; /* Adjust this as needed */
+  width: 100%; /* Adjust this as needed */
+  padding: 1em; 
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.homeHeader {
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  height: 10vh; /* vh stands for viewport height */
+  overflow: hidden;
+  min-height: 80px;
+}
+
 .gradient-circle {
   position: absolute;
   pointer-events: none;

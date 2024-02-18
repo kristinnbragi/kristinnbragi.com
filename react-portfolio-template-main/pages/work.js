@@ -117,7 +117,7 @@ function WorkCardWithModal({ project, current, onShowNext, onShowPrev, setCurren
 
 function VideoSection() {
   return (
-    <div className="videoSection" style={{ paddingTop: '50px' }}>
+    <div className="videoSection">
       <div className="videoWrapper">
         <iframe 
           width="100%" 
@@ -129,7 +129,7 @@ function VideoSection() {
           title="YouTube video 1"
         ></iframe>
       </div>
-      {/* <div className="videoWrapper">
+      <div className="videoWrapper">
         <iframe 
           width="100%" 
           height="315" 
@@ -139,7 +139,7 @@ function VideoSection() {
           allowFullScreen
           title="YouTube video 2"
         ></iframe>
-      </div> */}
+      </div>
       <style jsx>{`
         .videoSection {
           display: flex; 
@@ -215,69 +215,34 @@ export default function Home() {
         <title>{data.name}</title>
       </Head>
 
-      {/* <div className="gradient-circle"></div>
-      <div className="gradient-circle-bottom"></div> */}
-
       <div className="container mx-auto mb-10">
-        <div className="homeHeader">
-          <Header
-            handleWorkScroll={handleWorkScroll}
-            handleAboutScroll={handleAboutScroll}
-          />
+        <Header
+          handleWorkScroll={handleWorkScroll}
+          handleAboutScroll={handleAboutScroll}
+        />
+        
+
+
+        <div className="mt-10 laptop:mt-30 p-2 laptop:p-0" ref={workRef}>
+          <h1 className="text-2xl text-bold">Work.</h1>
+
+          <div className="mt-5 laptop:mt-10 grid grid-cols-1 tablet:grid-cols-2 gap-4">
+            {data.projects.map((project, index) => (
+              <WorkCardWithModal
+                key={project.id}
+                project={project}
+                current={currentProjectIndex === index}
+                onShowNext={showNextProject}
+                onShowPrev={showPrevProject}
+                setCurrentProjectIndex={setCurrentProjectIndex}
+                index={index}
+              />
+            ))}
+          </div>
         </div>
 
-        <div className="home">
-          <div className="flex justify-center">
-            <h1
-              ref={textOne}
-              className="text-center text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl p-1 tablet:p-2 text-bold w-4/5 mob:w-full laptop:w-4/5"
-            >
-              {data.headerTaglineTwo}
-            </h1>
-          </div>
-
-          <div className="flex justify-center">
-            <h1
-              ref={textOne}
-              className="text-center text-2xl tablet:text-4xl laptop:text-4xl laptopl:text-5xl p-1 tablet:p-2 text-bold w-4/5 mob:w-full laptop:w-4/5"
-            >
-              {data.headerTaglineThree}
-            </h1>
-          </div>
-
-          {/* <div className="laptop:mt-20 mt-10">
-            <div className="mt-5">
-              <h1
-                ref={textOne}
-                className="text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl p-1 tablet:p-2 text-bold w-4/5 mob:w-full laptop:w-4/5"
-              >
-                {data.headerTaglineOne}
-              </h1>
-              <h1
-                ref={textTwo}
-                className="text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl p-1 tablet:p-2 text-bold w-full laptop:w-4/5"
-              >
-                {data.headerTaglineTwo}
-              </h1>
-              <h1
-                ref={textThree}
-                className="text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl p-1 tablet:p-2 text-bold w-full laptop:w-4/5"
-              >
-                {data.headerTaglineThree}
-              </h1>
-              <h1
-                ref={textFour}
-                className="text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl p-1 tablet:p-2 text-bold w-full laptop:w-4/5"
-              >
-                {data.headerTaglineFour}
-              </h1>
-            </div>
-
-            <Socials className="mt-2 laptop:mt-5" />
-          </div> */}
-
-          <VideoSection />
-        </div>
+        
+        <Footer />
       </div>
     </div>
   );
