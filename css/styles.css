@@ -1,0 +1,56 @@
+:root {
+    --shelf-rect-stroke-width: 32px;
+    --shelf-rect-height-multiplier: 6;
+}
+
+body {
+    background-color: #86a7cd; /* Replace with your desired color */
+}
+
+#wall-above {
+    height: 50vh;
+    margin: auto;
+    border: 1px solid #ccc; /* For visual reference; remove later */
+}
+
+#shelf-container {
+    width: 50%;
+    height: 400px;
+    margin: auto;
+}
+
+#shelf-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    fill-rule: evenodd;
+    clip-rule: evenodd;
+    stroke-linecap: round;
+    stroke-miterlimit: 1.5;
+}
+
+.shelf-rect {
+    fill:#90624a;
+    stroke:#d4996c;
+    height: calc(var(--shelf-rect-stroke-width)*var(--shelf-rect-height-multiplier));
+    stroke-width:var(--shelf-rect-stroke-width);
+}
+
+.shelf-wood-grain-line-svg {
+    fill-rule:evenodd;
+    clip-rule:evenodd;
+    stroke-linejoin:round;
+    stroke-miterlimit:2;
+}
+
+.shelf-wood-grain-line-path {
+    fill:#c6865d;
+}
+
+#shelf-wood-grain-line-group-left {
+    
+}
+
+#shelf-wood-grain-line-group-right {
+
+}
