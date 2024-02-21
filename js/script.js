@@ -112,6 +112,7 @@ const horizontalWoodGrains = [
         width: 120,
     },
 ];
+const startGrainIndexes = [0, 8, 3, 14];
 
 // function adjustWoodGrainLines() {
 //     const shelfSvg = document.getElementById('shelfSvg');
@@ -188,7 +189,6 @@ window.addEventListener('resize', adjustRect);
 function populateWoodGrains() {
     const container = document.getElementById('shelf-container');
     let lengthOfShelf = container.offsetWidth - 64;
-    let startGrainIndexes = [0, 3, 8, 14];
     let floors = [0, 1, 2, 3];
 
     floors.forEach((floor, floorIndex) => {
@@ -225,7 +225,6 @@ function updateWoodGrainsCount() {
     const floors = document.querySelectorAll('#shelf-svg .shelf-wood-grain-line-group-floor');
     const container = document.getElementById('shelf-container');
     let lengthOfShelf = container.offsetWidth - 64;
-    let startGrainIndexes = [0, 3, 8, 14];
     // let floors = [0, 1, 2, 3];
 
     floors.forEach((floor, floorIndex) => {
