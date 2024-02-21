@@ -29,6 +29,11 @@ body {
     stroke-miterlimit: 1.5;
 }
 
+.debug-rect {
+    fill:#00000000;
+    stroke:#00000044;
+}
+
 .shelf-rect {
     fill:#90624a;
     stroke:#d4996c;
