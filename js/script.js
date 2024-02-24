@@ -195,7 +195,8 @@ function populateWoodGrains() {
         let nextGrainIndex = startGrainIndexes[floorIndex % startGrainIndexes.length];
         let roomForMoreGrains = true;
         let gap = lengthOfShelf;
-        let offsetX = 32;
+        let numGrainsToInsert = 0;
+        let gapBetweenGrains = 0;
 
         while (roomForMoreGrains) {
             if (nextGrainIndex >= horizontalWoodGrains.length) {
@@ -206,12 +207,27 @@ function populateWoodGrains() {
 
             if (gap < nextGrain.width) {
                 roomForMoreGrains = false;
+                gapBetweenGrains = gap / (numGrainsToInsert + 1);
             } else {
-                insertGrain(floor, nextGrain, offsetX);
                 gap -= nextGrain.width;
-                offsetX += nextGrain.width;
                 nextGrainIndex++;
+                numGrainsToInsert++;
             }
+        }
+
+        nextGrainIndex = startGrainIndexes[floorIndex % startGrainIndexes.length];
+        let offsetX = 32;
+
+        for (let i = 0; i < numGrainsToInsert; i++) {
+            if (nextGrainIndex >= horizontalWoodGrains.length) {
+                nextGrainIndex = 0;
+            }
+
+            let nextGrain = horizontalWoodGrains[nextGrainIndex];
+            offsetX += gapBetweenGrains;
+            insertGrain(floor, nextGrain, offsetX);
+            offsetX += nextGrain.width;
+            nextGrainIndex++;
         }
     });
 }
@@ -228,6 +244,9 @@ function updateWoodGrainsCount() {
     // let floors = [0, 1, 2, 3];
 
     floors.forEach((floor, floorIndex) => {
+        let numGrainsToUpdate = 0;
+        let numGrainsToInsert = 0;
+        let gapBetweenGrains = 0;
         let nextGrainIndex = startGrainIndexes[floorIndex % startGrainIndexes.length];
         let roomForMoreGrains = true;
         let gap = lengthOfShelf;
@@ -246,14 +265,29 @@ function updateWoodGrainsCount() {
             if (grainTotalWidth > lengthOfShelf) {
                 path.remove();
                 roomForMoreGrains = false;
+                gapBetweenGrains = gap / (numGrainsToUpdate + 1);
             } else {
                 gap -= nextGrain.width;
-                offsetX += nextGrain.width;
                 nextGrainIndex++;
+                numGrainsToUpdate++;
             }
         });
 
         if (roomForMoreGrains == false) {
+            nextGrainIndex = startGrainIndexes[floorIndex % startGrainIndexes.length];
+            offsetX = 32;
+    
+            for (let i = 0; i < numGrainsToUpdate; i++) {
+                if (nextGrainIndex >= horizontalWoodGrains.length) {
+                    nextGrainIndex = 0;
+                }
+    
+                let nextGrain = horizontalWoodGrains[nextGrainIndex];
+                offsetX += gapBetweenGrains;
+                updateGrainPosition(floorIndex, nextGrain, offsetX, i);
+                offsetX += nextGrain.width;
+                nextGrainIndex++;
+            }
             return 0;
         }
     
@@ -266,12 +300,39 @@ function updateWoodGrainsCount() {
 
             if (gap < nextGrain.width) {
                 roomForMoreGrains = false;
+                gapBetweenGrains = gap / (numGrainsToUpdate + numGrainsToInsert + 1);
             } else {
-                insertGrain(floorIndex, nextGrain, offsetX);
                 gap -= nextGrain.width;
-                offsetX += nextGrain.width;
                 nextGrainIndex++;
+                numGrainsToInsert++;
             }
+        }
+
+        nextGrainIndex = startGrainIndexes[floorIndex % startGrainIndexes.length];
+        offsetX = 32;
+
+        for (let i = 0; i < numGrainsToUpdate; i++) {
+            if (nextGrainIndex >= horizontalWoodGrains.length) {
+                nextGrainIndex = 0;
+            }
+
+            let nextGrain = horizontalWoodGrains[nextGrainIndex];
+            offsetX += gapBetweenGrains;
+            updateGrainPosition(floorIndex, nextGrain, offsetX, i);
+            offsetX += nextGrain.width;
+            nextGrainIndex++;
+        }
+
+        for (let i = 0; i < numGrainsToInsert; i++) {
+            if (nextGrainIndex >= horizontalWoodGrains.length) {
+                nextGrainIndex = 0;
+            }
+
+            let nextGrain = horizontalWoodGrains[nextGrainIndex];
+            offsetX += gapBetweenGrains;
+            insertGrain(floorIndex, nextGrain, offsetX);
+            offsetX += nextGrain.width;
+            nextGrainIndex++;
         }
     });
 }
@@ -292,6 +353,16 @@ function insertGrain(floor, grain, x) {
     newPath.setAttribute('transform', `translate(${newX}, ${newY})`);
     newPath.setAttribute('class', 'shelf-wood-grain-line-path'); // Assuming you want to apply styles
     floors[floor].appendChild(newPath);
+}
+
+function updateGrainPosition(floor, grain, x, grainIndex) {
+    const floors = document.querySelectorAll('#shelf-svg .shelf-wood-grain-line-group-floor');
+    const grainsInFloor = floors[floor].querySelectorAll('.shelf-wood-grain-line-path');
+    const grainToUpdate = grainsInFloor[grainIndex];
+    let heightOfShelf = 192;
+    const newX = grain.x + x;
+    const newY = grain.y + floor * heightOfShelf;
+    grainToUpdate.setAttribute('transform', `translate(${newX}, ${newY})`);
 }
 
 function removeGrain(floor, grain, x) {
