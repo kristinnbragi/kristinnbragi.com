@@ -116,6 +116,16 @@ const container = document.getElementById('shelf-container');
 const startGrainIndexes = [0, 8, 3, 14];
 const shelfStrokeWidth = parseFloat(getComputedStyle(document.querySelectorAll('#shelf-svg .shelf-rect')[0]).getPropertyValue('stroke-width'));
 
+function onLoad() {
+    adjustRect();
+    populateWoodGrains();
+}
+
+function onResize() {
+    adjustRect();
+    updateWoodGrains();
+}
+
 function adjustRect() {
     const container = document.getElementById('shelf-container');
     const rects = document.querySelectorAll('#shelf-svg .shelf-rect');
@@ -267,7 +277,5 @@ function removeGrain(floor, grain, x) {
     floors[floor].appendChild(newPath);
 }
 
-window.addEventListener('load', adjustRect);
-window.addEventListener('resize', adjustRect);
-window.addEventListener('load', populateWoodGrains);
-window.addEventListener('resize', updateWoodGrains);
+window.addEventListener('load', onLoad);
+window.addEventListener('resize', onResize);
