@@ -119,11 +119,13 @@ const shelfStrokeWidth = parseFloat(getComputedStyle(document.querySelectorAll('
 function onLoad() {
     adjustRect();
     populateWoodGrains();
+    populateProjects();
 }
 
 function onResize() {
     adjustRect();
     updateWoodGrains();
+    updateProjects();
 }
 
 function adjustRect() {
@@ -275,6 +277,40 @@ function removeGrain(floor, grain, x) {
     newPath.setAttribute('transform', `translate(${newX}, ${newY})`);
     newPath.setAttribute('class', 'shelf-wood-grain-line-path'); // Assuming you want to apply styles
     floors[floor].appendChild(newPath);
+}
+
+function populateProjects() {
+    const gameBoxesContainer = document.getElementById('game-boxes-container');
+    const overlap = 32; // 32px overlap
+
+    for (let i = 0; i < 12; i++) { // Example: Adding 4 game boxes
+        const gameBox = document.createElement('div');
+        gameBox.classList.add('game-box');
+        gameBox.style.left = `${i * overlap}px`;
+        // Set any other properties or event listeners on gameBox here
+        gameBoxesContainer.appendChild(gameBox);
+    }
+    randomizeBoxColors();
+}
+
+function randomizeBoxColors() {
+    const gameBoxes = document.querySelectorAll('.game-box');
+    gameBoxes.forEach(box => {
+        // Generate random color components
+        const r = Math.floor(Math.random() * 256); // Red: 0-255
+        const g = Math.floor(Math.random() * 256); // Green: 0-255
+        const b = Math.floor(Math.random() * 256); // Blue: 0-255
+
+        // Construct a CSS color string
+        const randomColor = `rgb(${r}, ${g}, ${b})`;
+
+        // Apply the random color as the background
+        box.style.backgroundColor = randomColor;
+    });
+}
+
+function updateProjects() {
+    
 }
 
 window.addEventListener('load', onLoad);

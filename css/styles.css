@@ -14,6 +14,7 @@ body {
 }
 
 #shelf-container {
+    position: relative; /* This makes it the reference point for absolutely positioned children */
     width: 50%;
     height: 400px;
     margin: auto;
@@ -58,4 +59,27 @@ body {
 
 #shelf-wood-grain-line-group-right {
 
+}
+
+#game-boxes-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 32px; /* Space between boxes */
+    display: flex; /* Example layout; adjust as needed */
+    flex-direction: row; /* Adjust based on your shelf design */
+}
+
+.game-box {
+    position: absolute;
+    width: 100px; /* Adjust based on your design */
+    height: calc(var(--shelf-rect-stroke-width)*(var(--shelf-rect-height-multiplier) - 1));
+    background-color: #f0f0f0; /* Example color */
+    transition: transform 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+.game-box:hover {
+    transform: translateX(-64px); /* Move to the left on hover */
 }
