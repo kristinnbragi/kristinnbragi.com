@@ -74,12 +74,29 @@ body {
 
 .game-box {
     position: absolute;
-    width: 100px; /* Adjust based on your design */
-    height: calc(var(--shelf-rect-stroke-width)*(var(--shelf-rect-height-multiplier) - 1));
+    width: 96px; /* Adjust based on your design */
+    height: calc(var(--shelf-rect-stroke-width) * (var(--shelf-rect-height-multiplier) - 1));
     background-color: #f0f0f0; /* Example color */
     transition: transform 0.3s ease; /* Smooth transition for the hover effect */
+    display: flex; /* Example layout; adjust as needed */
+    flex-direction: row; /* Adjust based on your shelf design */
 }
 
 .game-box:hover {
     transform: translateX(-64px); /* Move to the left on hover */
+}
+
+.game-box-side {
+    height: 100%; /* This ensures they fill the game-box */
+    top: 0;
+    left: 0;
+    /* No need for separate transitions or transforms here */
+}
+
+.game-box-cover {
+    width: 100%; /* This ensures they fill the game-box */
+    height: 100%; /* This ensures they fill the game-box */
+    top: 0;
+    left: 0;
+    /* No need for separate transitions or transforms here */
 }

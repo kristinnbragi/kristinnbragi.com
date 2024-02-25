@@ -112,6 +112,59 @@ const horizontalWoodGrains = [
         width: 120,
     },
 ];
+
+    // Example game box assets
+const games = [
+    {
+        side: "assets/gameboxes/tos_side.png",
+        cover: "assets/gameboxes/tos_cover.png"
+    },
+    {
+        side: "assets/gameboxes/example-side.png",
+        cover: "assets/gameboxes/example-cover.png"
+    },
+    {
+        side: "assets/gameboxes/tos_side.png",
+        cover: "assets/gameboxes/tos_cover.png"
+    },
+    {
+        side: "assets/gameboxes/example-side.png",
+        cover: "assets/gameboxes/example-cover.png"
+    },
+    {
+        side: "assets/gameboxes/tos_side.png",
+        cover: "assets/gameboxes/tos_cover.png"
+    },
+    {
+        side: "assets/gameboxes/tos_side.png",
+        cover: "assets/gameboxes/tos_cover.png"
+    },
+    {
+        side: "assets/gameboxes/tos_side.png",
+        cover: "assets/gameboxes/tos_cover.png"
+    },
+    {
+        side: "assets/gameboxes/tos_side.png",
+        cover: "assets/gameboxes/tos_cover.png"
+    },
+    {
+        side: "assets/gameboxes/tos_side.png",
+        cover: "assets/gameboxes/tos_cover.png"
+    },
+    {
+        side: "assets/gameboxes/tos_side.png",
+        cover: "assets/gameboxes/tos_cover.png"
+    },
+    {
+        side: "assets/gameboxes/tos_side.png",
+        cover: "assets/gameboxes/tos_cover.png"
+    },
+    {
+        side: "assets/gameboxes/tos_side.png",
+        cover: "assets/gameboxes/tos_cover.png"
+    },
+];
+
 const container = document.getElementById('shelf-container');
 const startGrainIndexes = [0, 8, 3, 14];
 const shelfStrokeWidth = parseFloat(getComputedStyle(document.querySelectorAll('#shelf-svg .shelf-rect')[0]).getPropertyValue('stroke-width'));
@@ -281,16 +334,34 @@ function removeGrain(floor, grain, x) {
 
 function populateProjects() {
     const gameBoxesContainer = document.getElementById('game-boxes-container');
-    const overlap = 32; // 32px overlap
+    const overlap = 24;
 
-    for (let i = 0; i < 12; i++) { // Example: Adding 4 game boxes
+    games.forEach((game, i) => {
         const gameBox = document.createElement('div');
         gameBox.classList.add('game-box');
+        
+        // Calculate the left position for overlap
+        // Adjust the calculation if you want a different overlap logic
         gameBox.style.left = `${i * overlap}px`;
-        // Set any other properties or event listeners on gameBox here
+
+        // Create and append the side image
+        const sideImg = document.createElement('img');
+        sideImg.className = 'game-box-side';
+        sideImg.style.width = `${overlap}px`;
+        // Example: Using the first game's side image for all boxes or customize as needed
+        sideImg.src = game.side;
+        gameBox.appendChild(sideImg);
+
+        // Create and append the cover image
+        const coverImg = document.createElement('img');
+        coverImg.className = 'game-box-cover';
+        // Example: Using the first game's cover image for all boxes or customize as needed
+        coverImg.src = game.cover;
+        gameBox.appendChild(coverImg);
+
+        // Append the game box to the container
         gameBoxesContainer.appendChild(gameBox);
-    }
-    randomizeBoxColors();
+    });
 }
 
 function randomizeBoxColors() {
