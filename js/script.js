@@ -343,6 +343,8 @@ function populateProjects() {
         // Calculate the left position for overlap
         // Adjust the calculation if you want a different overlap logic
         gameBox.style.left = `${i * overlap}px`;
+        gameBox.setAttribute('tabindex', '0');
+        gameBox.setAttribute('role', 'button');
 
         // Create and append the side image
         const sideImg = document.createElement('img');

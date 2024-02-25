@@ -82,7 +82,7 @@ body {
     flex-direction: row; /* Adjust based on your shelf design */
 }
 
-.game-box:hover {
+.game-box:hover, .game-box:focus {
     transform: translateX(-64px); /* Move to the left on hover */
 }
 
