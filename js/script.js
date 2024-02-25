@@ -112,31 +112,9 @@ const horizontalWoodGrains = [
         width: 120,
     },
 ];
+const container = document.getElementById('shelf-container');
 const startGrainIndexes = [0, 8, 3, 14];
-
-// function adjustWoodGrainLines() {
-//     const shelfSvg = document.getElementById('shelfSvg');
-//     const width = shelfSvg.clientWidth; // Get the current width of the SVG
-//     // Determine the number of wood grain lines to show based on the width
-//     // Add or remove lines by manipulating the SVG's DOM
-// }
-
-// // Listen for resize events
-// window.addEventListener('resize', adjustWoodGrainLines);
-
-// Initial adjustment
-// adjustWoodGrainLines();
-// function populateWoodGrains() {
-//     const svgContainer = document.getElementById('shelf-svg');
-  
-//     woodGrains.forEach(grain => {
-//       const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-//       pathElement.setAttribute('d', grain.d);
-//       pathElement.setAttribute('transform', grain.transform);
-//       pathElement.setAttribute('style', grain.style);
-//       svgContainer.appendChild(pathElement);
-//     });
-//   }
+const shelfStrokeWidth = parseFloat(getComputedStyle(document.querySelectorAll('#shelf-svg .shelf-rect')[0]).getPropertyValue('stroke-width'));
 
 function adjustRect() {
     const container = document.getElementById('shelf-container');
@@ -159,64 +137,16 @@ function adjustRect() {
     rightWoodGrains.setAttribute('transform', `translate(${containerWidth - 2 * strokeWidthOffset}, 0)`);
 }
 
-// Adjust on load and window resize
-window.addEventListener('load', adjustRect);
-window.addEventListener('resize', adjustRect);
-
-// function adjustShelfContainerHeight() {
-//     // const container = document.getElementById('shelf-container');
-//     // const rects = document.querySelectorAll('#shelf-svg .shelf-rect');
-//     // let totalHeight = 0;
-//     // let spacingBetweenRects = 0; // Adjust this value if there is space between rects
-
-//     // rects.forEach(rect => {
-//     //     // Add the height of each rect to the total height
-//     //     totalHeight += rect.getBBox().height + spacingBetweenRects;
-//     // });
-
-//     // // Set the total height to the container
-//     // container.style.height = `${totalHeight}px`;
-
-//     // // If you want the outer container div to adjust as well, uncomment the following line
-//     // // document.getElementById('shelf-container').style.height = `${totalHeight}px`;
-// }
-
-// // Call this function to initially set the container height and whenever rects are added or removed
-// adjustShelfContainerHeight();
-// window.addEventListener('load', adjustShelfContainerHeight);
-// window.addEventListener('resize', adjustShelfContainerHeight);
-
 function populateWoodGrains() {
-    const container = document.getElementById('shelf-container');
-    let lengthOfShelf = container.offsetWidth - 64;
     let floors = [0, 1, 2, 3];
 
     floors.forEach((floor, floorIndex) => {
         let nextGrainIndex = startGrainIndexes[floorIndex % startGrainIndexes.length];
-        let roomForMoreGrains = true;
-        let gap = lengthOfShelf;
-        let numGrainsToInsert = 0;
-        let gapBetweenGrains = 0;
 
-        while (roomForMoreGrains) {
-            if (nextGrainIndex >= horizontalWoodGrains.length) {
-                nextGrainIndex = 0;
-            }
-
-            let nextGrain = horizontalWoodGrains[nextGrainIndex];
-
-            if (gap < nextGrain.width) {
-                roomForMoreGrains = false;
-                gapBetweenGrains = gap / (numGrainsToInsert + 1);
-            } else {
-                gap -= nextGrain.width;
-                nextGrainIndex++;
-                numGrainsToInsert++;
-            }
-        }
+        const [numGrainsToInsert, gapBetweenGrains] = calculateFit(nextGrainIndex);
 
         nextGrainIndex = startGrainIndexes[floorIndex % startGrainIndexes.length];
-        let offsetX = 32;
+        let offsetX = shelfStrokeWidth;
 
         for (let i = 0; i < numGrainsToInsert; i++) {
             if (nextGrainIndex >= horizontalWoodGrains.length) {
@@ -233,83 +163,26 @@ function populateWoodGrains() {
 }
 
 function updateWoodGrains() {
-    // updateWoodGrainsPosition();
-    updateWoodGrainsCount();
-}
-
-function updateWoodGrainsCount() {
     const floors = document.querySelectorAll('#shelf-svg .shelf-wood-grain-line-group-floor');
-    const container = document.getElementById('shelf-container');
-    let lengthOfShelf = container.offsetWidth - 64;
-    // let floors = [0, 1, 2, 3];
 
     floors.forEach((floor, floorIndex) => {
-        let numGrainsToUpdate = 0;
         let numGrainsToInsert = 0;
-        let gapBetweenGrains = 0;
         let nextGrainIndex = startGrainIndexes[floorIndex % startGrainIndexes.length];
-        let roomForMoreGrains = true;
-        let gap = lengthOfShelf;
-        let grainTotalWidth = 0;
-        let offsetX = 32;
+        let offsetX = shelfStrokeWidth;
+        let currentGrains = floor.querySelectorAll('path');
+        let numGrainsToUpdate = currentGrains.length;
 
-        floor.querySelectorAll('path').forEach(path => {
-            if (nextGrainIndex >= horizontalWoodGrains.length) {
-                nextGrainIndex = 0;
+        const [numGrainsThatFit, gapBetweenGrains] = calculateFit(nextGrainIndex);
+
+        if (currentGrains.length > numGrainsThatFit) {
+            // Remove the excess grains
+            for (let i = currentGrains.length - 1; i >= numGrainsThatFit; i--) {
+                currentGrains[i].remove();
+                numGrainsToUpdate--;
             }
-
-            let nextGrain = horizontalWoodGrains[nextGrainIndex];
-
-            grainTotalWidth += nextGrain.width;
-
-            if (grainTotalWidth > lengthOfShelf) {
-                path.remove();
-                roomForMoreGrains = false;
-                gapBetweenGrains = gap / (numGrainsToUpdate + 1);
-            } else {
-                gap -= nextGrain.width;
-                nextGrainIndex++;
-                numGrainsToUpdate++;
-            }
-        });
-
-        if (roomForMoreGrains == false) {
-            nextGrainIndex = startGrainIndexes[floorIndex % startGrainIndexes.length];
-            offsetX = 32;
-    
-            for (let i = 0; i < numGrainsToUpdate; i++) {
-                if (nextGrainIndex >= horizontalWoodGrains.length) {
-                    nextGrainIndex = 0;
-                }
-    
-                let nextGrain = horizontalWoodGrains[nextGrainIndex];
-                offsetX += gapBetweenGrains;
-                updateGrainPosition(floorIndex, nextGrain, offsetX, i);
-                offsetX += nextGrain.width;
-                nextGrainIndex++;
-            }
-            return 0;
+        } else if (currentGrains.length < numGrainsThatFit) {
+            numGrainsToInsert = numGrainsThatFit - numGrainsToUpdate;
         }
-    
-        while (roomForMoreGrains) {
-            if (nextGrainIndex >= horizontalWoodGrains.length) {
-                nextGrainIndex = 0;
-            }
-
-            let nextGrain = horizontalWoodGrains[nextGrainIndex];
-
-            if (gap < nextGrain.width) {
-                roomForMoreGrains = false;
-                gapBetweenGrains = gap / (numGrainsToUpdate + numGrainsToInsert + 1);
-            } else {
-                gap -= nextGrain.width;
-                nextGrainIndex++;
-                numGrainsToInsert++;
-            }
-        }
-
-        nextGrainIndex = startGrainIndexes[floorIndex % startGrainIndexes.length];
-        offsetX = 32;
 
         for (let i = 0; i < numGrainsToUpdate; i++) {
             if (nextGrainIndex >= horizontalWoodGrains.length) {
@@ -337,10 +210,27 @@ function updateWoodGrainsCount() {
     });
 }
 
-// Dummy functions for demonstration
-function getGapTotal(lengthOfShelf, floor) {
-    // Calculate the remaining space
-    return 100; // Placeholder return
+function calculateFit(startIndex) {
+    let gap = container.offsetWidth - 2 * shelfStrokeWidth;
+    let nextGrainIndex = startIndex;
+    let numGrainsThatFit = 0;
+
+    while (true) {
+        if (nextGrainIndex >= horizontalWoodGrains.length) {
+            nextGrainIndex = 0;
+        }
+
+        let nextGrain = horizontalWoodGrains[nextGrainIndex];
+
+        if (gap < nextGrain.width) {
+            gapBetweenGrains = gap / (numGrainsThatFit + 1);
+            return [numGrainsThatFit, gapBetweenGrains];
+        } else {
+            gap -= nextGrain.width;
+            nextGrainIndex++;
+            numGrainsThatFit++;
+        }
+    }
 }
 
 function insertGrain(floor, grain, x) {
@@ -377,5 +267,7 @@ function removeGrain(floor, grain, x) {
     floors[floor].appendChild(newPath);
 }
 
+window.addEventListener('load', adjustRect);
+window.addEventListener('resize', adjustRect);
 window.addEventListener('load', populateWoodGrains);
 window.addEventListener('resize', updateWoodGrains);
